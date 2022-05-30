@@ -16,22 +16,27 @@ export const InfinityScroll = () => {
     let start = 0;
     setLoadAnimate(true);
 
+    for (let i = 0; i < start + 40; i++) {
+      newItems.push(data[i]);
+    }
+    setItems(newItems);
+
+    // intersection observer
     const observer = new IntersectionObserver((entries) => {
       const entry = entries[0];
       setLoading(entry.isIntersecting);
     });
-    for (let i = 0; i < start + 40; i++) {
-      newItems.push(data[i]);
-    }
-
     observer.observe(loadingRef.current);
-    setItems(newItems);
 
+    // loading animation
     setTimeout(() => {
       setLoadAnimate(false);
-    }, 1000);
+    }, 2000);
 
-    return () => {};
+    return () => {
+      observer.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,6 +59,7 @@ export const InfinityScroll = () => {
       }, 1000);
     }
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (
