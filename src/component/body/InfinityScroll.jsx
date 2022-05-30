@@ -16,7 +16,7 @@ export const InfinityScroll = () => {
     let start = 0;
     setLoadAnimate(true);
 
-    for (let i = 0; i < start + 40; i++) {
+    for (let i = start; i < start + 40; i++) {
       newItems.push(data[i]);
     }
     setItems(newItems);
@@ -26,6 +26,7 @@ export const InfinityScroll = () => {
       const entry = entries[0];
       setLoading(entry.isIntersecting);
     });
+    let currentRef = loadingRef.current;
     observer.observe(loadingRef.current);
 
     // loading animation
@@ -34,7 +35,7 @@ export const InfinityScroll = () => {
     }, 2000);
 
     return () => {
-      observer.disconnect();
+      observer.disconnect(currentRef);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
